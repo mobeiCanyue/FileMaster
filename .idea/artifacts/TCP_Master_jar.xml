@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TCP_Master:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TCP_Master_jar</output-path>
+    <root id="archive" name="TCP_Master.jar">
+      <element id="module-output" name="TCP_Master" />
+    </root>
+  </artifact>
+</component>

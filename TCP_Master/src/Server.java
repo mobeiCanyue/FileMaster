@@ -10,22 +10,19 @@ import java.util.Scanner;
  */
 public class Server {
     public static void runServer(Scanner sc) throws Exception {
-        System.out.println("服务器开始运行...");
-        System.out.println("当前服务器的IP地址是:" + InetAddress.getLocalHost().getHostAddress());
+        System.out.println("服务器开始运行...\n");
+        System.out.println("当前服务器的IP地址是:" + InetAddress.getLocalHost().getHostAddress()+"\n");
 
         String port = Client.portMaker(sc);
 
-        System.out.println("文件将在当前项目下保存...");
-        System.out.println("Waiting......");
+        System.out.println("文件将在当前项目下保存...\n");
 
         ServerSocket ss = new ServerSocket(Integer.parseInt(port));//服务器套接字
 
         while (true) {
-            System.out.println("监听中...");
+            //System.out.println("监听中...\n");
             Socket socket = ss.accept();//服务器端口接受socket套节字
             new Thread(new FileThread(socket)).start();
         }
     }
-
-
 }
