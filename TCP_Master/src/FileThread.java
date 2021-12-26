@@ -26,9 +26,7 @@ class FileThread implements Runnable {
             long length = dis.readLong();
 
             byte[] data = new byte[(int) length];
-            for (int i = 0; i < length; i++) {
-                data[i] = dis.readByte();
-            }
+            dis.readFully(data);//解决了不用Buffer流文件传输过慢的问题
             dos.write(data);
             System.out.println(Thread.currentThread().getName()+"传输完成,接收到来自:" + socket.getInetAddress() + "的文件:");
             System.out.println(new File(fileName).getAbsoluteFile()+"\n");

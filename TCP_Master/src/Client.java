@@ -12,16 +12,13 @@ public class Client {
         String ip = ipMaker(sc);
         String port = portMaker(sc);
 
-        File file = fileMaker(sc);
-
         Socket socket = socketMaker(ip, port);
         if (socket == null) {
             System.out.println("尝试连接失败，请检查你的网络或端口号占用情况...");
             System.exit(-1);
         }
 
-
-
+        File file = fileMaker(sc);
         fileSending(socket, file);
     }
 
