@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.security.MessageDigest;
 import java.util.Scanner;
 
 /**
@@ -9,16 +10,16 @@ import java.util.Scanner;
  */
 public class Client {
     public static void runClient(Scanner sc) {
-        String ip = ipMaker(sc);
-        String port = portMaker(sc);
+        String ip = NetFunction.ipMaker(sc);
+        String port = NetFunction.portMaker(sc);
 
-        Socket socket = socketMaker(ip, port);
+        Socket socket = NetFunction.socketMaker(ip, port);
         if (socket == null) {
             System.out.println("尝试连接失败，请检查你的网络或端口号占用情况...");
             System.exit(-1);
         }
 
-        File file = fileMaker(sc);
+        File file = NetFunction.fileMaker(sc);
         fileSending(socket, file);
     }
 
@@ -28,16 +29,25 @@ public class Client {
                 DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
                 DataInputStream dis2 = new DataInputStream(socket.getInputStream())
         ) {
-            dos.writeUTF(file.getName());
-            dos.writeLong(file.length());
-            int len;
-            byte[] data = new byte[1024 * 1024];
-            while ((len = dis1.read(data)) != -1) {
-                dos.write(data, 0, len);
-            }
+            long length = file.length();//获取文件字节长度
+            byte[] data = new byte[(int) length];
+
+            dos.writeUTF(file.getName());//1.
+            dos.writeLong(length);//2.
+
+            dis1.readFully(data);//把文件读到内存
+
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(data);
+            byte[] digest = md.digest();
+            String md5 = NetFunction.byteArrayToHexString(digest);
+
+            dos.writeUTF(md5);//3.传输哈希值
+            dos.write(data);//4.传文件字节
+
             String s = dis2.readUTF();
-            System.out.println(s);
-            System.out.println("传输结束");
+            System.out.println("\n"+s);
+            System.out.println("传输结束"+"\n");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -49,53 +59,5 @@ public class Client {
                 }
             }
         }
-    }
-
-    public static String ipMaker(Scanner sc) {
-        System.out.println("请输入用于传输的IP地址, 默认为(输入-1)为本地回环地址:");
-        String ip = sc.nextLine();
-        if ("-1".equals(ip)) {
-            ip = "127.0.0.1";
-        }
-        return ip;
-    }
-
-    public static String portMaker(Scanner sc) {
-        System.out.println("请输入用于传输的端口号, 默认(输入-1)为9980:");
-        String port = sc.nextLine();
-        if ("-1".equals(port)) {
-            port = "9980";
-        }
-        return port;
-    }
-
-    public static Socket socketMaker(String ip, String port) {
-        for (int i = 5; i >= 0; i--) {
-            try {
-                System.out.println("开始连接验证...");
-                Socket socket = new Socket(ip, Integer.parseInt(port));//如果连接失败就抛异常
-                System.out.println("连接成功 ! ! !");
-                return socket;//如果连接成功就返回对象
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("\nTCP 连接失败... 剩余的连接次数:" + i);
-                try {
-                    Thread.sleep(1000); //等一秒再尝试重连
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
-
-    public static File fileMaker(Scanner sc) {
-        System.out.println("请输入文件名称 (放在当前目录下或者输入绝对路径):");
-        File file = new File(sc.nextLine());
-        while (!file.exists() && !file.isFile()) {
-            System.out.println("文件不存在, 请放在当前目录下或者输入正确的路径 !");
-            file = new File(sc.nextLine());
-        }
-        return file;
     }
 }
