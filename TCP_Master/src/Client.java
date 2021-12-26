@@ -24,16 +24,19 @@ public class Client {
 
     public static void fileSending(Socket socket, File file) {
         try (
-                DataInputStream dis = new DataInputStream(new FileInputStream(file));
-                DataOutputStream dos = new DataOutputStream(socket.getOutputStream())
+                DataInputStream dis1 = new DataInputStream(new FileInputStream(file));
+                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+                DataInputStream dis2 = new DataInputStream(socket.getInputStream())
         ) {
             dos.writeUTF(file.getName());
             dos.writeLong(file.length());
             int len;
             byte[] data = new byte[1024 * 1024];
-            while ((len = dis.read(data)) != -1) {
+            while ((len = dis1.read(data)) != -1) {
                 dos.write(data, 0, len);
             }
+            String s = dis2.readUTF();
+            System.out.println(s);
             System.out.println("传输结束");
         } catch (Exception e) {
             e.printStackTrace();
