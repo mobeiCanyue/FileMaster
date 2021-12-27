@@ -2,6 +2,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author mobeiCanyue
@@ -19,9 +21,11 @@ public class Server {
 
         ServerSocket ss = new ServerSocket(Integer.parseInt(port));//服务器套接字
 
+        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
         while (true) {
             Socket socket = ss.accept();//服务器端口接受socket套节字
-            new Thread(new FileThread(socket)).start();
+            //new Thread(new FileThread(socket)).start();//这种写法会频繁地创建和销毁线程,效率低
+            cachedThreadPool.execute(new FileThread(socket));
         }
     }
 }
