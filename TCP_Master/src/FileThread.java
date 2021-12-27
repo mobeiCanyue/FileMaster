@@ -42,12 +42,14 @@ class FileThread implements Runnable {
             byte[] digest = md.digest();
             String md5 = NetFunction.byteArrayToHexString(digest);
 
-            System.out.println("文件的MD5哈希值:" + md5 +"\n");
+            System.out.println(Thread.currentThread().getName() +"文件的MD5哈希值:" + md5);
 
             if (raw_md5.equals(md5)) {
+                System.out.println(Thread.currentThread().getName() +"哈希值校验成功,文件传输无误");
                 dos2.writeUTF("来自服务器:[已收到文件:" + fileName + "]");
             } else {
-                dos2.writeUTF("来自服务器:[接受文件失败]");
+                System.out.println(Thread.currentThread().getName() +"传输文件失败,哈希值与文件不同");
+                dos2.writeUTF("来自服务器:[传输文件失败,哈希值与文件不同]");
             }
             System.out.println(Thread.currentThread().getName() + "传输完成,接收到来自:" + socket.getInetAddress() + "的文件:");
             System.out.println(new File(fileName).getAbsoluteFile() + "\n");

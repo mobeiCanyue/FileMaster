@@ -59,10 +59,11 @@ public class NetFunction {
     }
 
     /**
-     * 字节数组转十六进制:  https://www.jianshu.com/p/b419163272c1
+     * 字节数组转十六进制:
      * 将1个字节（1 byte = 8 bit）转为 2个十六进制位
      * 1个16进制位 = 4个二进制位 （即4 bit）
      * 转换思路：最简单的办法就是先将byte转为10进制的int类型，然后将十进制数转十六进制
+     * 源代码:https://www.jianshu.com/p/b419163272c1
      */
     private static String byteToHexString(byte b) {
         // byte类型赋值给int变量时，java会自动将byte类型转int类型，从低位类型到高位类型自动转换
