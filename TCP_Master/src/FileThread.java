@@ -1,5 +1,4 @@
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -23,7 +22,7 @@ class FileThread implements Runnable {
                 DataOutputStream dos2 = new DataOutputStream(socket.getOutputStream())
         ) {
             System.out.print(Thread.currentThread().getName() + "传输开始 ...");
-            System.out.println("客户端的地址为:"+ socket.getLocalAddress()+"\n");
+            System.out.println("客户端的地址为:" + socket.getLocalAddress() + "\n");
 
             String fileName = dis.readUTF();//1.文件名
             dos1 = new DataOutputStream(new FileOutputStream(fileName));
