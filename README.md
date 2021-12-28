@@ -11,22 +11,22 @@ Java版本最低要求: jdk1.8(也就是jdk8), 操作系统不限
 
 检验方法(以Windows为例): 打开命令行输入Java ,如果环境变量没问题, 会出现类似于如下的提示
 
-![image (1).png](./images/image (1).png)
+![image (1)](https://user-images.githubusercontent.com/81098819/147565081-6af7c8d3-d3bb-46fc-8d40-3408f9ab52c5.png)
 
 
 
 **2.下载这个jar包**
 
-![image (2).png](./images/image (2).png)
+![image (2)](https://user-images.githubusercontent.com/81098819/147565111-66f7e913-8afe-4a3c-a35a-f6ab1f1e1b95.png)
 
 
 
 3.在jar包的目录下输入以下命令  **java -jar TCP_Master.jar**
 
-![image (3).png](./images/image (3).png)
+![image (3)](https://user-images.githubusercontent.com/81098819/147565126-b18dc283-6ac3-4dc6-b286-738ca262a091.png)
 
 
 
 **4.enjoyed !**
 
-![image (4).png](./images/image (4).png)
+![image (4)](https://user-images.githubusercontent.com/81098819/147565134-0f5d2dab-67cf-44d5-9108-d049e4102ef8.png)
