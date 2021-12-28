@@ -15,7 +15,7 @@ Java版本最低要求: jdk1.8(也就是jdk8), 操作系统不限
 
 
 
-**2.下载这个jar包(在realease里找最新版本)**
+**2.下载这个jar包(在release里找最新版本)**
 
 ![image (2)](https://user-images.githubusercontent.com/81098819/147565111-66f7e913-8afe-4a3c-a35a-f6ab1f1e1b95.png)
 
