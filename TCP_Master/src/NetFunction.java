@@ -85,6 +85,14 @@ public class NetFunction {
         return file;
     }
 
+    /**
+     * 计算校验和
+     * @param algorithm 采用的校验算法,如"MD5","SHA1","SHA256"
+     * @param data 存储文件全部字节的byte数组
+     * @return 哈希值的字符串
+     * @throws Exception java.security.NoSuchAlgorithmException –
+     * if no Provider supports a MessageDigestSpi implementation for the specified algorithm.
+     */
     public static String checkSum_Hash(String algorithm, byte[] data) throws Exception {
         //MessageDigest类为应用程序提供消息摘要算法的功能，例如SHA-1或SHA-256。
         MessageDigest md = MessageDigest.getInstance(algorithm);//获取MD5MessageDigest类的实例
@@ -95,16 +103,13 @@ public class NetFunction {
 
     /**
      * 字节数组转十六进制:因为是字节数组, 最高8位 2^8 =16*16 =256,也就是说,÷16不会有余数超过16的情况,所以求一次即可(canyue)
-     * 将1个字节（1 byte = 8 bit）转为 2个十六进制位
-     * 1个16进制位 = 4个二进制位 （即4 bit）
-     * 转换思路：最简单的办法就是先将byte转为10进制的int类型，然后将十进制数转十六进制
-     * 源代码:https://www.jianshu.com/p/b419163272c1
+     * 将1个字节(1 Byte = 8 bit)转为 2个十六进制位
+     * 转换思路：先将byte转为两个10进制的int类型，然后将十进制数转十六进制
      */
-    private static String byteToHexString(byte b) {
-        // byte类型赋值给int变量时，java会自动将byte类型转int类型，从低位类型到高位类型自动转换
-        int n = b;
+    private static String byteToHexString(byte data) {
+        int n = data;
 
-        // 将十进制数转十六进制
+        // 将十进制数转十六进制,÷16不会有余数超过16的情况,所以求一次即可
         if (n < 0)
             n += 256;
         int d1 = n / 16;
@@ -117,9 +122,9 @@ public class NetFunction {
     /**
      * 将字节数组里每个字节转成2个16进制位的字符串后拼接起来
      */
-    public static String byteArrayToHexString(byte[] b) {
+    public static String byteArrayToHexString(byte[] data) {
         StringBuilder resultSb = new StringBuilder();
-        for (byte value : b) {
+        for (byte value : data) {
             resultSb.append(byteToHexString(value));
         }
         return resultSb.toString();

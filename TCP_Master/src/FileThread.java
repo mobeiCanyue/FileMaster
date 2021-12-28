@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -21,7 +22,8 @@ class FileThread implements Runnable {
                 DataInputStream dis = new DataInputStream(socket.getInputStream());
                 DataOutputStream dos2 = new DataOutputStream(socket.getOutputStream())
         ) {
-            System.out.println(Thread.currentThread().getName() + "传输开始 ...\n");
+            System.out.print(Thread.currentThread().getName() + "传输开始 ...");
+            System.out.println("客户端的地址为:"+ socket.getLocalAddress()+"\n");
 
             String fileName = dis.readUTF();//1.文件名
             dos1 = new DataOutputStream(new FileOutputStream(fileName));
@@ -51,6 +53,7 @@ class FileThread implements Runnable {
             System.out.println(new File(fileName).getAbsoluteFile() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("\n与客户端连接异常...\n");
         } finally {
             if (dos1 != null) {
                 try {
