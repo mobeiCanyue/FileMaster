@@ -98,7 +98,7 @@ public class NetFunction {
         MessageDigest md = MessageDigest.getInstance(algorithm);//获取MD5MessageDigest类的实例
         md.update(data);//类读取数组里的数据
         byte[] digest = md.digest();//MessageDigest类"消化",也就是计算哈希值
-        return NetFunction.byteArrayToHexString(digest);//digest是字节数组,为了便于比较,要转成16进制
+        return byteArrayToHexString(digest);//digest是字节数组,为了便于比较,要转成16进制
     }
 
     /**
