@@ -30,17 +30,24 @@ public class Client {
                 DataInputStream dis2 = new DataInputStream(socket.getInputStream())//输入流,读取服务器反馈的套接字
         ) {
             long length = file.length();//获取文件字节长度,非常好用, 直接避免了重复冗余的for循环读文件
-            byte[] data = new byte[(int) length];//创建文件字节那么长的字节数组
-
-            dis1.readFully(data);//把文件读到字节数组
-
-            String md5 = NetFunction.checkSum_Hash("MD5", data);//计算哈希值
-
             dos.writeUTF(file.getName());//1.写文件名
             dos.writeLong(length);//2.写文件字节长度
-            dos.writeUTF(md5);//3.传输哈希值
-            dos.write(data);//4.传文件字节
-
+            if (length < Integer.MAX_VALUE) {
+                byte[] data = new byte[(int) length];//创建文件字节那么长的字节数组
+                dis1.readFully(data);//把文件读到字节数组
+                String md5 = NetFunction.checkSum_Hash("MD5", data);//计算哈希值
+                dos.write(data);//4.传文件字节
+                dos.writeUTF(md5);//3.传输哈希值
+            }else {
+                int len;
+                StringBuilder md5 = new StringBuilder();
+                byte[] data = new byte[Integer.MAX_VALUE];
+                while ((len = dis1.read(data)) != -1) {
+                    dos.write(data,0,len);//4.传文件字节
+                    md5.append(NetFunction.checkSum_Hash("MD5", data));
+                }
+                dos.writeUTF(md5.toString());//3.传输哈希值
+            }
             String s = dis2.readUTF();//接受服务器的反馈
             System.out.println("\n" + s);
             System.out.println("传输结束" + "\n");

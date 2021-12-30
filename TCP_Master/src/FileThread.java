@@ -13,8 +13,6 @@ class FileThread implements Runnable {
     public FileThread(Socket socket) {
         this.socket = socket;
     }
-
-
     @Override
     public void run() {
         try (
@@ -26,14 +24,13 @@ class FileThread implements Runnable {
 
             String fileName = dis.readUTF();//1.文件名
             dos1 = new DataOutputStream(new FileOutputStream(fileName));
-
             long length = dis.readLong();//2.文件字节长度
 
             byte[] data = new byte[(int) length];
 
+            dis.readFully(data);//4.(1)用这个方法,解决了循环读取的问题,大大提高效率(2)解决了不用Buffer流导致文件传输过慢的问题
             String raw_md5 = dis.readUTF();//3.接收文件哈希值
 
-            dis.readFully(data);//4.(1)用这个方法,解决了循环读取的问题,大大提高效率(2)解决了不用Buffer流导致文件传输过慢的问题
 
             dos1.write(data);
 
