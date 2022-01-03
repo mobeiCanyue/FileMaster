@@ -1,4 +1,6 @@
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.util.Scanner;
@@ -87,11 +89,12 @@ public class NetFunction {
 
     /**
      * 计算校验和
+     *
      * @param algorithm 采用的校验算法,如"MD5","SHA1","SHA256"
-     * @param data 存储文件全部字节的byte数组
+     * @param data      存储文件全部字节的byte数组
      * @return 哈希值的字符串
      * @throws Exception java.security.NoSuchAlgorithmException –
-     * if no Provider supports a MessageDigestSpi implementation for the specified algorithm.
+     *                   if no Provider supports a MessageDigestSpi implementation for the specified algorithm.
      */
     public static String checkSum_Hash(String algorithm, byte[] data) throws Exception {
         //MessageDigest类为应用程序提供消息摘要算法的功能，例如SHA-1或SHA-256。
@@ -128,5 +131,21 @@ public class NetFunction {
             resultSb.append(byteToHexString(value));
         }
         return resultSb.toString();
+    }
+
+    /**
+     * 手写了一个关闭流的函数,使用了泛型
+     *
+     * @param t   待关闭的流对象
+     * @param <T> 继承了可关闭类的对象,意味着可以调用close函数(显然比用Object好)
+     */
+    public static <T extends Closeable> void closeStream(T t) {
+        if (t != null) {
+            try {
+                t.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
